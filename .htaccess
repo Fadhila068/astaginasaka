@@ -1,0 +1,51 @@
+# Disable directory browsing
+Options -Indexes
+
+# ----------------------------------------------------------------------
+# Security: Protect sensitive files from direct web access
+# ----------------------------------------------------------------------
+<FilesMatch "^\.env|composer\.(json|lock)|spark|README\.md|export_company\.sql">
+    <IfModule authz_core_module>
+        Require all denied
+    </IfModule>
+    <IfModule !authz_core_module>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ----------------------------------------------------------------------
+# Rewrite engine
+# ----------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    Options +FollowSymlinks
+    RewriteEngine On
+
+    # Block direct web access to system/app/vendor/writable/tests folders
+    RewriteRule ^(app|vendor|writable|tests) - [F,L,NC]
+    RewriteRule ^\.env - [F,L,NC]
+
+    # Redirect Trailing Slashes...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Checks to see if the user is attempting to access a valid file,
+    # such as an image or css document, if this isn't true it sends the
+    # request to the front controller, index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
+
+    # Ensure Authorization header is passed along
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    # Fallback if mod_rewrite is disabled
+    ErrorDocument 404 index.php
+</IfModule>
+
+# Disable server signature
+ServerSignature Off

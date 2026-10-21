@@ -1,0 +1,52 @@
+# --------------------------------------------------
+# Environment & Secret Configurations
+# --------------------------------------------------
+.env
+.env.*
+!.env.example
+/.env astaginasaka infinity free.txt
+/export_company.sql
+
+# --------------------------------------------------
+# Local Deployment Archives
+# --------------------------------------------------
+/*.zip
+
+# --------------------------------------------------
+# Composer Dependencies
+# --------------------------------------------------
+/vendor/
+
+# --------------------------------------------------
+# CodeIgniter 4 Runtime Directories
+# --------------------------------------------------
+/writable/cache/
+/writable/debugbar/*.json
+/writable/debugbar/debugbar_*
+/writable/logs/
+/writable/session/
+/writable/uploads/
+/public/uploads/
+
+# --------------------------------------------------
+# Testing & Cache
+# --------------------------------------------------
+.phpunit.result.cache
+
+# --------------------------------------------------
+# IDE & Code Editors
+# --------------------------------------------------
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# --------------------------------------------------
+# Operating System Files
+# --------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+env
+/astaginasaka-update/
